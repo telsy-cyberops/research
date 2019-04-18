@@ -1,7 +1,7 @@
 rule APT34_NLMT_v1 {
    meta:
       description = "Strings based YARA - Detects APT34 NLMT - FE1B011FE089969D960D2DCE2A61020725A02E15DBC812EE6B6ECC6A98875392"
-	  author = "Emanuele De Lucia"
+	  author = "Emanuele De Lucia - @Manu_De_Lucia"
    strings:
       $x1 = "    app.exe -ip 192.168.200.0/24;192.168.2.0/24 -u1 admin;administrator;user;test -p1 pass;123456;admin -o out.txt -t 10" fullword wide
       $x2 = "    app.exe [Password] PortScan [-ip IP] [-port port] [-o OutputFolder] [-t ThreadCount] [-time PortScanTimeout]" fullword wide
