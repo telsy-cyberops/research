@@ -10,4 +10,5 @@ rule APT32_KerrDown_IID952948 : OceanLotus {
 	  $h4 = {55 8bec ff???? e8???????? 59 b001 5d c3  }
 	  $h5 = {55 8bec 807d0800 7512 e8???????? e8 4f   }
    condition:
-      (uint16(0) == 0x5a4d) and all of them}
+      (uint16(0) == 0x5a4d) and all of them
+   }
