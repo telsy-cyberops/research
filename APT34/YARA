@@ -1,3 +1,30 @@
+rule APT34_Jason_v1 : APT HKTL {
+   meta:
+      description = "Detects APT34 Jason Exchange Bruter HKTL"
+	  author = "Emanuele De Lucia"
+   strings:
+      $s1 = "Jason.pdb" fullword ascii
+      $s2 = "get_PasswordPattern" fullword ascii
+      $s3 = "get_PasswordFile" fullword ascii
+      $s4 = "get_pCurrentPassword" fullword ascii
+      $s5 = "Microsoft.Exchange.WebServices.Data" fullword ascii
+      $s6 = "Total Login Successful :" fullword wide
+      $s7 = "Login Successful" fullword wide
+      $s8 = "<PasswordPattern>k__BackingField" fullword ascii
+      $s9 = "<pCurrentPassword>k__BackingField" fullword ascii
+      $s10 = "Jason - Exchange Mail BF - v 7.0" fullword wide
+      $s11 = "Please enter Password File" fullword wide
+      $s12 = "get_UsernameStart" fullword ascii
+      $s13 = "get_UserPassFile" fullword ascii
+      $s14 = "get_pCurrentUsername" fullword ascii
+      $s15 = "set_pCurrentPassword" fullword ascii
+      $s16 = "set_PasswordFile" fullword ascii
+      $s17 = "set_PasswordPattern" fullword ascii
+      $s18 = "connection was closed" fullword wide
+   condition:
+      uint16(0) == 0x5a4d and filesize < 100KB and 10 of them
+}
+
 rule APT34_NLMT_v1 {
    meta:
       description = "Strings based YARA - Detects APT34 NLMT - FE1B011FE089969D960D2DCE2A61020725A02E15DBC812EE6B6ECC6A98875392"
