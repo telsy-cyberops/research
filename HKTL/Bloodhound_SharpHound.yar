@@ -1,6 +1,6 @@
 rule Bloodhound_SharpHound_v11 : HKTL RECO TOOL  {
     meta:
-        description = "Detects the Bloodhound NET Reco tool"
+        description = "Detects Sharphound PS wrapper"
         author = "Emanuele De Lucia"
 		tlp = "white"
     strings:
