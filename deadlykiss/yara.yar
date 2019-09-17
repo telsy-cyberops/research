@@ -5,16 +5,18 @@ rule APT_DeadlyKiss_DLL_v1 : UNKNOWN ORIGIN THREAT ACTOR {
             date        = "2019-09-17"
 			tlp         = "white"
         strings:
-		    /* Common exports in dataset */
+		    /* Common exports in dlls dataset */
 			$export1 = "DllRegisterServer" ascii                          
 			$export2 = "DllCanUnloadNow" ascii         
 			$export3 = "DllGetClassObject" ascii
 			/* SHELL */
 			$shell = "SHELL32.dll" ascii
+			/* STRINGS */
+			$pname1 = "Java(TM) Platform SE 6" fullword wide
+			$pname2 = "Intel(R) Chipset Device Software" fullword wide
 			/* Extracted matched common functions */
             $func1 = { 55 8B EC 8B 55 0C 8B 45 08 83 65 0C 00 D1 EA 85 C0 74 14 81 fA }
-			$func2 = { 55 8B EC 83 EC 4C 83 65 FC 00 EB 07 8B 45 FC 40 89 45 FC 83 7D } 
-			
+			$func2 = { 55 8B EC 83 EC 4C 83 65 FC 00 EB 07 8B 45 FC 40 89 45 FC 83 7D }
         condition:
-            uint16(0) == 0x5a4d and filesize < 700KB and (all of ($export*) and $shell or all of ($func*))
+            uint16(0) == 0x5a4d and filesize < 700KB and ((all of ($export*) and $shell and 1 of ($pname*)) or (all of ($func*)))
 }
