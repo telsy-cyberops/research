@@ -2,7 +2,7 @@ rule APT41_MESSAGETAP_18721_v33 : CHINESE THREAT ACTOR {
    meta:
       description = "Detects APT41-MESSAGETAP"
       author = "Emanuele De Lucia"
-      date = "2019-10-13"
+      date = "2019-11-13"
 	    tlp = "white"
    strings:
       $x1 = "%04d%02d%02d_%d.dump" fullword ascii
