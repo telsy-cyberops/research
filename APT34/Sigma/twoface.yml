@@ -1,0 +1,76 @@
+title: May indicate webshell creation by APT34
+status: experimental
+description: May indicate webshell creation by APT34
+references:
+- https://www.emanueledelucia.net/a-dive-into-apt34-aka-oilrig-aka-cobalt-gypsy-twoface-webshell/
+author: Emanuele De Lucia
+date: 2020/01/06
+tags:
+- attack.persistence
+- attack.t1100
+level: critical
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection_1:
+    EventID: 11
+  selection_2:
+    TargetFilename|contains:
+    - \inetpub\wwwroot\
+  selection_3:
+    TargetFilename|contains:
+    - \www\
+    - \htdocs\
+    - \html\
+    - \web\
+  selection_4:
+    TargetFilename|contains:
+    - error1.aspx
+    - signin.aspx
+    - logout.aspx
+    - error3.aspx
+    - signout.aspx
+    - logon.aspx
+    - RedirSuiteService.aspx
+    - getidtoken.aspx
+    - EventClass.aspx
+    - petrol.aspx
+    - owaauth.aspx
+    - outlookdn.aspx
+    - outlook.aspx
+    - getidtokens.aspx
+    - errorff.aspx
+    - error0.aspx
+    - WrkStatLog.aspx
+    - viewpercthesaurus.aspx
+    - Timeoutctl.aspx
+    - timeout.aspx
+    - tax.aspx
+    - signproces.aspx
+    - ShowContents.aspx
+    - RegStructures.aspx
+    - QualityControl.aspx
+    - owalogin.aspx
+    - outlooktoken.aspx
+    - outlookservice.aspx
+    - outlooklogonservice.aspx
+    - outlooklogon.aspx
+    - outlookfilles.aspx
+    - OutlookCName.aspx
+    - testerA.aspx
+    - testerB.aspx
+    - testerD.aspx
+    - testerF.aspx
+    - MSGTypesValid.aspx
+    - moveresults.aspx
+    - GetTokenId.aspx
+    - GetLoginToken.aspx
+    - explainedit.aspx
+    - expirepw.aspx
+    - espw.aspx
+    - erroref.aspx
+  condition: selection_1 and ( selection_2 and selection_4 ) or selection_1 and (
+    selection_3 and selection_4 )
+falsepositives:
+- Legitimate administrators or web developers creating legitimate files in the web application folder
