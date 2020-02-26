@@ -1,7 +1,7 @@
 import "pe"
-rule CobaltStrike_Implant_43223_21 : TA505 THREAT ACTOR {
+rule Get2_Implant_43223_21 : TA505 THREAT ACTOR {
    meta:
-      description = "Detects CobalStrike variant used by TA505"
+      description = "Detects Get2 variant used by TA505"
       author = "Emanuele De Lucia"
       hash1 = "341189f31b39ab16aa7454d683c46b5e3f2a8b693b842fcb0d129502d8e5fe5b"
 	  reference = "https://github.com/StrangerealIntel/DailyIOC/blob/master/2020-02-25/TA505.csv"
