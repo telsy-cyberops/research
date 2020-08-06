@@ -1,4 +1,5 @@
-#TA505 #SectorJ4 #MalDoc #Attachments #XLS
+#TA505 #SectorJ4 #maldoc #xls #sha256
+
 
 884743629b0b9040016c5a24275427bdc7f764fbfbf37838bc2b582a15e0aedf
 2b5dc1360c78baaffc4c2a0990210bd7db96de4830241923c2f42a858ed6e95b
