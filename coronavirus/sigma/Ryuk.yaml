@@ -1,0 +1,150 @@
+title: Ryuk_Ransomware_Oct2020
+description: Detects Ryuk ransomware Execution October 2020
+author: Telsy TRT SecOps Cyber Threat Intelligence
+status: stable
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection1:
+    Image:
+    - '*\*.exe'
+    CommandLine|contains:
+    - '8 LAN'
+  selection2:
+    EventID: 11
+    TargetFilename:
+    - '*\RyukReadMe.html'
+  selection3:
+    ParentCommandLine:
+    - '*net.exe* stop *samss* /y'
+    Image:
+    - '*\net1.exe'
+    CommandLine:
+    - '*stop *samss* /y'
+  selection4:
+    ParentCommandLine:
+    - '*net.exe* stop *audioendpointbuilder* /y'
+    Image:
+    - '*\net1.exe'
+    CommandLine:
+    - '*stop *audioendpointbuilder* /y'
+  condition: selection1 or selection2 or selection3 or selection4
+falsepositives:
+- unknown
+level: high
+
+### TRANSLATIONS ###
+
+#YARA-L for Chronicle Security
+
+rule ryuk_ransomware_oct2020 {
+	meta:
+		author = "Telsy TRT"
+		description = "Detects Ryuk ransomware execution October 2020 Author: Telsy TRT. License: https://github.com/Neo23x0/sigma/blob/master/LICENSE.Detection.Rules.md."
+		reference = "Internal Research"
+		version = "0.01"
+		created = "2020-10-30"
+
+	events:
+		re.regex($selection1.target.process.file.full_path, "*\\*.exe")
+		re.regex($selection1.target.process.command_line, "8 LAN")
+
+		$selection2.metadata.product_log_id = "11"
+		re.regex($selection2.target.process.file.full_path, "*\\RyukReadMe.html")
+
+		re.regex($selection3.target.process.command_line, "*net.exe* stop *samss* /y")
+		re.regex($selection3.target.process.file.full_path, "*\\net1.exe")
+		re.regex($selection3.target.process.command_line, "*stop *samss* /y")
+
+		re.regex($selection4.target.process.command_line, "*net.exe* stop *audioendpointbuilder* /y")
+		re.regex($selection4.target.process.file.full_path, "*\\net1.exe")
+		re.regex($selection4.target.process.command_line, "*stop *audioendpointbuilder* /y")
+
+	condition:
+		$selection1 or $selection2 or $selection3 or $selection4
+}
+
+#Elasticsearch
+
+(winlog.channel:"Microsoft\-Windows\-Sysmon\/Operational" AND ((((process.executable.keyword:(*\*.exe) AND process.args.keyword:(*8\ LAN*)) OR (winlog.event_id:"11" AND TargetFilename.keyword:(*\\RyukReadMe.html))) OR (process.parent.args.keyword:(*net.exe*\ stop\ *samss*\ \/y) AND process.executable.keyword:(*\\net1.exe) AND process.args.keyword:(*stop\ *samss*\ \/y))) OR (process.parent.args.keyword:(*net.exe*\ stop\ *audioendpointbuilder*\ \/y) AND process.executable.keyword:(*\\net1.exe) AND process.args.keyword:(*stop\ *audioendpointbuilder*\ \/y))))
+
+#Kibana
+
+{
+    "_id": "Ryuk_Ransomware_Oct2020",
+    "_type": "search",
+    "_source": {
+        "title": "Sigma: Ryuk_Ransomware_Oct2020",
+        "description": "Detects Ryuk ransomware execution October 2020 Author: Telsy TRT. License: https://github.com/Neo23x0/sigma/blob/master/LICENSE.Detection.Rules.md. Reference: https://tdm.socprime.com/tdm/info/@@doc_id_34534gshd5lae@@",
+        "hits": 0,
+        "columns": [],
+        "sort": [
+            "@timestamp",
+            "desc"
+        ],
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"index\": \"winlogbeat-*\", \"filter\": [], \"highlight\": {\"pre_tags\": [\"@kibana-highlighted-field@\"], \"post_tags\": [\"@/kibana-highlighted-field@\"], \"fields\": {\"*\": {}}, \"require_field_match\": false, \"fragment_size\": 2147483647}, \"query\": {\"query_string\": {\"query\": \"(winlog.channel:\\\"Microsoft\\\\-Windows\\\\-Sysmon\\\\/Operational\\\" AND ((((process.executable.keyword:(*\\\\*.exe) AND process.args.keyword:(*8\\\\ LAN*)) OR (winlog.event_id:\\\"11\\\" AND TargetFilename.keyword:(*\\\\\\\\RyukReadMe.html))) OR (process.parent.args.keyword:(*net.exe*\\\\ stop\\\\ *samss*\\\\ \\\\/y) AND process.executable.keyword:(*\\\\\\\\net1.exe) AND process.args.keyword:(*stop\\\\ *samss*\\\\ \\\\/y))) OR (process.parent.args.keyword:(*net.exe*\\\\ stop\\\\ *audioendpointbuilder*\\\\ \\\\/y) AND process.executable.keyword:(*\\\\\\\\net1.exe) AND process.args.keyword:(*stop\\\\ *audioendpointbuilder*\\\\ \\\\/y))))\", \"analyze_wildcard\": true}}}"
+        }
+    }
+}
+
+#ArcSight
+
+((deviceVendor = "Microsoft" AND deviceProduct = "Sysmon") AND (((((((((deviceProcessName CONTAINS "*\\*.exe" OR sourceProcessName CONTAINS "*\\*.exe" OR destinationProcessName CONTAINS "*\\*.exe")) AND ((destinationServiceName CONTAINS "*8 LAN*" OR deviceCustomString1 CONTAINS "*8 LAN*"))) OR (externalId = "11" AND filePath CONTAINS "*\\RyukReadMe.html"))) OR (((deviceCustomString2 CONTAINS "*net.exe* stop *samss* /y" OR sourceServiceName CONTAINS "*net.exe* stop *samss* /y")) AND ((deviceProcessName CONTAINS "*\\net1.exe" OR sourceProcessName CONTAINS "*\\net1.exe" OR destinationProcessName CONTAINS "*\\net1.exe")) AND ((destinationServiceName CONTAINS "*stop *samss* /y" OR deviceCustomString1 CONTAINS "*stop *samss* /y"))))) OR (((deviceCustomString2 CONTAINS "*net.exe* stop *audioendpointbuilder* /y" OR sourceServiceName CONTAINS "*net.exe* stop *audioendpointbuilder* /y")) AND ((deviceProcessName CONTAINS "*\\net1.exe" OR sourceProcessName CONTAINS "*\\net1.exe" OR destinationProcessName CONTAINS "*\\net1.exe")) AND ((destinationServiceName CONTAINS "*stop *audioendpointbuilder* /y" OR deviceCustomString1 CONTAINS "*stop *audioendpointbuilder* /y"))))))
+
+#QRadar
+
+SELECT UTF8(payload) as search_payload from events where (LOGSOURCETYPENAME(devicetype) ilike 'Microsoft Windows Security Event Log' and ((((("Image" ilike '%\\%.exe') and ("Process CommandLine" ilike '%8 LAN%')) or ("EventID"='11' and ("Filename" ilike '%\\RyukReadMe.html'))) or (("ParentCommandLine" ilike '%net.exe% stop %samss% /y') and ("Image" ilike '%\\net1.exe') and ("Process CommandLine" ilike '%stop %samss% /y'))) or (("ParentCommandLine" ilike '%net.exe% stop %audioendpointbuilder% /y') and ("Image" ilike '%\\net1.exe') and ("Process CommandLine" ilike '%stop %audioendpointbuilder% /y'))))
+
+#Splunk
+
+(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" (((((Image="*\*.exe") (CommandLine="*8 LAN*")) OR (EventCode="11" (TargetFilename="*\\RyukReadMe.html"))) OR ((ParentCommandLine="*net.exe* stop *samss* /y") (Image="*\\net1.exe") (CommandLine="*stop *samss* /y"))) OR ((ParentCommandLine="*net.exe* stop *audioendpointbuilder* /y") (Image="*\\net1.exe") (CommandLine="*stop *audioendpointbuilder* /y"))))
+
+#Azure Sentinel
+
+SysmonEvent | where (((((Image matches regex '(?i).*.*.exe') and (CommandLine contains '.*8 LAN.*')) or (EventID == 11 and (TargetFilename endswith @'.*\\RyukReadMe.html'))) or ((ParentCommandLine matches regex '(?i).*net.exe.* stop .*samss.* /y') and (Image endswith @'.*\\net1.exe') and (CommandLine matches regex '(?i).*stop .*samss.* /y'))) or ((ParentCommandLine matches regex '(?i).*net.exe.* stop .*audioendpointbuilder.* /y') and (Image endswith @'.*\\net1.exe') and (CommandLine matches regex '(?i).*stop .*audioendpointbuilder.* /y')))
+
+#GrayLog
+
+((((Image.keyword:(*\*.exe) AND CommandLine.keyword:(*8 LAN*)) OR (EventID:"11" AND TargetFilename.keyword:(*\\RyukReadMe.html))) OR (ParentCommandLine.keyword:(*net.exe* stop *samss* \/y) AND Image.keyword:(*\\net1.exe) AND CommandLine.keyword:(*stop *samss* \/y))) OR (ParentCommandLine.keyword:(*net.exe* stop *audioendpointbuilder* \/y) AND Image.keyword:(*\\net1.exe) AND CommandLine.keyword:(*stop *audioendpointbuilder* \/y)))
+
+
+#RSA NetWitness
+
+(((device.type='winevent_nic') && (event.source='microsoft-windows-security-auditing')) && (((((Image regex '.*\.*\.exe') && (CommandLine contains '8 LAN')) || ((reference.id='11') && (TargetFilename contains '\RyukReadMe\.html'))) || ((ParentCommandLine regex '.*net\.exe.* stop .*samss.* /y') && (Image contains '\net1\.exe') && (CommandLine regex '.*stop .*samss.* /y'))) || ((ParentCommandLine regex '.*net\.exe.* stop .*audioendpointbuilder.* /y') && (Image contains '\net1\.exe') && (CommandLine regex '.*stop .*audioendpointbuilder.* /y'))))
+
+#Carbon
+
+(((((process_name:\\ AND .exe) AND (cmdline:"8 LAN")) OR (filemod_count:[1 to *] AND (filemod:\\RyukReadMe.html))) OR ((ParentCommandLine:net.exe AND stop AND samss AND /y) AND (process_name:\\net1.exe) AND (cmdline:stop AND samss AND /y))) OR ((ParentCommandLine:net.exe AND stop AND audioendpointbuilder AND /y) AND (process_name:\\net1.exe) AND (cmdline:stop AND audioendpointbuilder AND /y)))
+
+#RAW SYSMON
+
+<!--RuleGroup groupRelation should be `or` <RuleGroup groupRelation="or"> -->
+
+<!--Insert This Rule in <ProcessCreate onmatch="include"> section -->
+
+		<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
+			<Image condition="end with">\.exe</Image>
+			<CommandLine condition="contains">8 LAN</CommandLine>
+		</Rule>
+		
+		<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
+			<ParentCommandLine condition="end with">net.exe stop samss /y</ParentCommandLine>
+			<Image condition="end with">\net1.exe</Image>
+			<CommandLine condition="end with">stop samss /y</CommandLine>
+		</Rule>
+		
+		<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
+			<ParentCommandLine condition="end with">net.exe stop audioendpointbuilder /y</ParentCommandLine>
+			<Image condition="end with">\net1.exe</Image>
+			<CommandLine condition="end with">stop audioendpointbuilder /y</CommandLine>
+		</Rule>
+<!--Insert This Rule in <FileCreate onmatch="include"> section -->
+
+		<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
+			<TargetFilename condition="end with">\RyukReadMe.html</TargetFilename>
+		</Rule>
+
+
