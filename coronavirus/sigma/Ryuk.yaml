@@ -39,30 +39,25 @@ level: high
 #YARA-L for Chronicle Security
 
 rule ryuk_ransomware_oct2020 {
-	meta:
-		author = "Telsy TRT"
-		description = "Detects Ryuk ransomware execution October 2020 Author: Telsy TRT. License: https://github.com/Neo23x0/sigma/blob/master/LICENSE.Detection.Rules.md."
-		reference = "Internal Research"
-		version = "0.01"
-		created = "2020-10-30"
-
-	events:
-		re.regex($selection1.target.process.file.full_path, "*\\*.exe")
-		re.regex($selection1.target.process.command_line, "8 LAN")
-
-		$selection2.metadata.product_log_id = "11"
-		re.regex($selection2.target.process.file.full_path, "*\\RyukReadMe.html")
-
-		re.regex($selection3.target.process.command_line, "*net.exe* stop *samss* /y")
-		re.regex($selection3.target.process.file.full_path, "*\\net1.exe")
-		re.regex($selection3.target.process.command_line, "*stop *samss* /y")
-
-		re.regex($selection4.target.process.command_line, "*net.exe* stop *audioendpointbuilder* /y")
-		re.regex($selection4.target.process.file.full_path, "*\\net1.exe")
-		re.regex($selection4.target.process.command_line, "*stop *audioendpointbuilder* /y")
-
-	condition:
-		$selection1 or $selection2 or $selection3 or $selection4
+meta:
+author = "Telsy TRT"
+description = "Detects Ryuk ransomware execution October 2020" 
+reference = "Internal Research"
+version = "0.01"
+created = "2020-10-30"
+events:
+re.regex($selection1.target.process.file.full_path, "*\\*.exe")
+re.regex($selection1.target.process.command_line, "8 LAN")
+$selection2.metadata.product_log_id = "11"
+re.regex($selection2.target.process.file.full_path, "*\\RyukReadMe.html")
+re.regex($selection3.target.process.command_line, "*net.exe* stop *samss* /y")
+re.regex($selection3.target.process.file.full_path, "*\\net1.exe")
+re.regex($selection3.target.process.command_line, "*stop *samss* /y")
+re.regex($selection4.target.process.command_line, "*net.exe* stop *audioendpointbuilder* /y")
+re.regex($selection4.target.process.file.full_path, "*\\net1.exe")
+re.regex($selection4.target.process.command_line, "*stop *audioendpointbuilder* /y")
+condition:
+$selection1 or $selection2 or $selection3 or $selection4
 }
 
 #Elasticsearch
@@ -76,7 +71,7 @@ rule ryuk_ransomware_oct2020 {
     "_type": "search",
     "_source": {
         "title": "Sigma: Ryuk_Ransomware_Oct2020",
-        "description": "Detects Ryuk ransomware execution October 2020 Author: Telsy TRT. License: https://github.com/Neo23x0/sigma/blob/master/LICENSE.Detection.Rules.md. Reference: https://tdm.socprime.com/tdm/info/@@doc_id_34534gshd5lae@@",
+        "description": "Detects Ryuk ransomware execution October 2020",
         "hits": 0,
         "columns": [],
         "sort": [
@@ -109,7 +104,6 @@ SysmonEvent | where (((((Image matches regex '(?i).*.*.exe') and (CommandLine co
 #GrayLog
 
 ((((Image.keyword:(*\*.exe) AND CommandLine.keyword:(*8 LAN*)) OR (EventID:"11" AND TargetFilename.keyword:(*\\RyukReadMe.html))) OR (ParentCommandLine.keyword:(*net.exe* stop *samss* \/y) AND Image.keyword:(*\\net1.exe) AND CommandLine.keyword:(*stop *samss* \/y))) OR (ParentCommandLine.keyword:(*net.exe* stop *audioendpointbuilder* \/y) AND Image.keyword:(*\\net1.exe) AND CommandLine.keyword:(*stop *audioendpointbuilder* \/y)))
-
 
 #RSA NetWitness
 
@@ -146,5 +140,3 @@ SysmonEvent | where (((((Image matches regex '(?i).*.*.exe') and (CommandLine co
 		<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
 			<TargetFilename condition="end with">\RyukReadMe.html</TargetFilename>
 		</Rule>
-
-
