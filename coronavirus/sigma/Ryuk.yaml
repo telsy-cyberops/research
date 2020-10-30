@@ -119,24 +119,21 @@ SysmonEvent | where (((((Image matches regex '(?i).*.*.exe') and (CommandLine co
 
 <!--Insert This Rule in <ProcessCreate onmatch="include"> section -->
 
-		<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
-			<Image condition="end with">\.exe</Image>
-			<CommandLine condition="contains">8 LAN</CommandLine>
-		</Rule>
-		
-		<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
-			<ParentCommandLine condition="end with">net.exe stop samss /y</ParentCommandLine>
-			<Image condition="end with">\net1.exe</Image>
-			<CommandLine condition="end with">stop samss /y</CommandLine>
-		</Rule>
-		
-		<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
-			<ParentCommandLine condition="end with">net.exe stop audioendpointbuilder /y</ParentCommandLine>
-			<Image condition="end with">\net1.exe</Image>
-			<CommandLine condition="end with">stop audioendpointbuilder /y</CommandLine>
-		</Rule>
+<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
+<Image condition="end with">\.exe</Image>
+<CommandLine condition="contains">8 LAN</CommandLine>
+</Rule>
+<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
+<ParentCommandLine condition="end with">net.exe stop samss /y</ParentCommandLine>
+<Image condition="end with">\net1.exe</Image>
+<CommandLine condition="end with">stop samss /y</CommandLine>
+</Rule>
+<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
+<ParentCommandLine condition="end with">net.exe stop audioendpointbuilder /y</ParentCommandLine>
+<Image condition="end with">\net1.exe</Image>
+<CommandLine condition="end with">stop audioendpointbuilder /y</CommandLine>
+</Rule>
 <!--Insert This Rule in <FileCreate onmatch="include"> section -->
-
-		<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
-			<TargetFilename condition="end with">\RyukReadMe.html</TargetFilename>
-		</Rule>
+<Rule name="Ryuk_Ransomware_Oct2020 by Telsy TRT" groupRelation="and">
+<TargetFilename condition="end with">\RyukReadMe.html</TargetFilename>
+</Rule>
