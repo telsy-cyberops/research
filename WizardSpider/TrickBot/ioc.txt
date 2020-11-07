@@ -1,0 +1,55 @@
+Botnet: tot7/8
+
+SHA256:
+
+7cf503456cdb035829553ff5d219e36013d0fc3d0946083d42af3dee39140bab
+(https://www.virustotal.com/gui/file/7cf503456cdb035829553ff5d219e36013d0fc3d0946083d42af3dee39140bab/detection)
+
+5c2e4babf91c3409867d8aeae8de9c5ebcbe062b7a5de5cab646d54da6205f43
+(https://www.virustotal.com/gui/file/5c2e4babf91c3409867d8aeae8de9c5ebcbe062b7a5de5cab646d54da6205f43/detection)
+
+IP:
+
+202.136.89.226
+202.169.244.252
+203.176.135.38
+212.3.104.50
+41.203.215.122
+41.41.179.239
+43.239.152.240
+43.242.141.59
+43.245.216.190
+43.255.113.180
+45.230.8.34
+45.233.25.6
+78.138.128.20
+49.156.41.74
+
+
+URL:
+
+tcp://202.136.89.226:449
+tcp://202.169.244.252:449
+tcp://203.176.135.38:449
+tcp://212.3.104.50:449
+tcp://41.203.215.122:449
+tcp://41.41.179.239:449
+tcp://43.239.152.240:449
+tcp://43.242.141.59:449
+tcp://43.245.216.190:449
+tcp://43.255.113.180:449
+tcp://45.230.8.34:449
+tcp://45.233.25.6:449
+tcp://78.138.128.20:449
+tcp://49.156.41.74:449
+
+
+
+Payload MITRE ATT&CK:
+
+T1130 [Install Root Certificate]
+T1085 [Signed Binary Proxy Execution]
+T1129 [Execution through Module Load]
+T1012 [Query Registry]
+T1082 [System Information Discovery]
+
