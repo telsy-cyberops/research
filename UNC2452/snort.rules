@@ -8,3 +8,14 @@ alert udp $HOME_NET any -> any 53 (msg:"DNS request for a blacklisted domain 'zu
 alert udp $HOME_NET any -> any 53 (msg:"DNS request for a blacklisted domain 'websitetheme.com'"; content:"|0c|websitetheme|03|com|00|";nocase; reference:url,https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html; sid:[SID HERE]; rev:1;)
 alert udp $HOME_NET any -> any 53 (msg:"DNS request for a blacklisted domain 'thedoccloud.com'"; content:"|0b|thedoccloud|03|com|00|";nocase; reference:url,https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html; sid:[SID HERE]; rev:1;)
 alert udp $HOME_NET any -> any 53 (msg:"DNS request for a blacklisted domain 'panhardware.com'"; content:"|0b|panhardware|03|com|00|";nocase; reference:url,https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html; sid:[SID HERE]; rev:1;)
+
+
+alert tcp any any <> 34.203.203.23 any (msg:"Established connection to blacklisted IP address 34.203.203.23"; flow:established; sid:[SID HERE]; rev:1;)
+alert tcp any any <> 54.215.192.52 any (msg:"Established connection to blacklisted IP address 54.215.192.52"; flow:established; sid:[SID HERE]; rev:1;)
+alert tcp any any <> 54.193.127.66 any (msg:"Established connection to blacklisted IP address 54.193.127.66"; flow:established; sid:[SID HERE]; rev:1;)
+alert tcp any any <> 13.59.205.66 any (msg:"Established connection to blacklisted IP address 13.59.205.66"; flow:established; sid:[SID HERE]; rev:1;)
+alert tcp any any <> 51.89.125.18 any (msg:"Established connection to blacklisted IP address 51.89.125.18"; flow:established; sid:[SID HERE]; rev:1;)
+alert tcp any any <> 5.252.177.25 any (msg:"Established connection to blacklisted IP address 5.252.177.25"; flow:established; sid:[SID HERE]; rev:1;)
+alert tcp any any <> 5.252.177.21 any (msg:"Established connection to blacklisted IP address 5.252.177.21"; flow:established; sid:[SID HERE]; rev:1;)
+alert tcp any any <> 139.99.115.204 any (msg:"Established connection to blacklisted IP address 139.99.115.204"; flow:established; sid:[SID HERE]; rev:1;)
+alert tcp any any <> 204.188.205.176 any (msg:"Established connection to blacklisted IP address 204.188.205.176"; flow:established; sid:[SID HERE]; rev:1;)
